@@ -51,12 +51,11 @@ def main():
     if not os.path.exists(args.out_dir):
         os.makedirs(args.out_dir)
     _, fname = os.path.split(args.input_yuv)
+    print(fname)
     seq_name = fname.strip('.yuv')
-    width, height = args.size.split('x')
+    width, height = 640, 360
     bit_depth = 16 if '16bit' in fname else 10 if '10bit' in fname else 8
     pix_fmt = '444' if '444' in fname else '420'
-    print(bit_depth)
-    print(pix_fmt)
     try:
         width = int(width)
         height = int(height)
