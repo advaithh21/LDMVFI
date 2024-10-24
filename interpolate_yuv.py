@@ -10,7 +10,7 @@ from utility import read_frame_yuv2rgb, tensor2rgb
 from omegaconf import OmegaConf
 from main import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
-
+import numpy as np
 
 parser = argparse.ArgumentParser(description='Frame Interpolation Evaluation')
 
