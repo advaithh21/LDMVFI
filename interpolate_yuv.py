@@ -55,6 +55,8 @@ def main():
     width, height = args.size.split('x')
     bit_depth = 16 if '16bit' in fname else 10 if '10bit' in fname else 8
     pix_fmt = '444' if '444' in fname else '420'
+    print(bit_depth)
+    print(pix_fmt)
     try:
         width = int(width)
         height = int(height)
@@ -112,6 +114,8 @@ def main():
                 out =  torch.clamp(out, min=-1., max=1.) # interpolated frame in [-1,1]
 
         # write to output video
+        tensor2rgb(frame0)[0].save(f"output_frame_{t}_1.png")
+        tensor2rgb(frame0)[0].save(f"output_frame_{t}_2.png")
         writer.writeFrame(tensor2rgb(frame0)[0])
         writer.writeFrame(tensor2rgb(out)[0])
 
@@ -119,6 +123,7 @@ def main():
         frame0 = frame1
     
     # write the last frame
+    tensor2rgb(frame1)[0].save(f"output_frame_final.png")
     writer.writeFrame(tensor2rgb(frame1)[0])
 
     stream.close()
