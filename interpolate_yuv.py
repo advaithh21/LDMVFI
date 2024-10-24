@@ -114,8 +114,16 @@ def main():
                 out =  torch.clamp(out, min=-1., max=1.) # interpolated frame in [-1,1]
 
         # write to output video
-        tensor2rgb(frame0)[0].save(f"output_frame_{t}_1.png")
-        tensor2rgb(frame0)[0].save(f"output_frame_{t}_2.png")
+        rgb_frame0 = tensor2rgb(frame0)[0]  # This is likely a NumPy array
+        rgb_frame1 = tensor2rgb(out)[0] 
+
+        if isinstance(rgb_frame0, np.ndarray):
+            rgb_frame0 = Image.fromarray(rgb_frame0.astype(np.uint8))  # Convert to PIL Image
+        if isinstance(rgb_frame1, np.ndarray):
+            rgb_frame1 = Image.fromarray(rgb_frame1.astype(np.uint8))
+
+        rgb_frame0.save(f"output_frame_{t}_1.png")
+        rgb_frame1.save(f"output_frame_{t}_2.png")
         writer.writeFrame(tensor2rgb(frame0)[0])
         writer.writeFrame(tensor2rgb(out)[0])
 
@@ -123,7 +131,10 @@ def main():
         frame0 = frame1
     
     # write the last frame
-    tensor2rgb(frame1)[0].save(f"output_frame_final.png")
+    final_frame_rgb = tensor2rgb(frame1)[0]
+    if isinstance(final_frame_rgb, np.ndarray):
+        final_frame_rgb = Image.fromarray(final_frame_rgb.astype(np.uint8))
+    final_frame_rgb.save("output_frame_final.png")
     writer.writeFrame(tensor2rgb(frame1)[0])
 
     stream.close()
